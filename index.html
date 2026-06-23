@@ -1306,7 +1306,7 @@ h1, h2, h3 {
   }
 
   .nav { padding: 0 var(--space-md); }
-  .nav-links li:not(:last-child) { display: none; }
+  .nav-links li.nav-hide-mobile { display: none; }
 
   .container {
     padding-left: var(--space-md);
@@ -1352,8 +1352,9 @@ h1, h2, h3 {
     &nbsp;&nbsp;DocLang
   </a>
   <ul class="nav-links">
-    <li><a href="https://github.com/doclang-project" rel="noopener">GitHub</a></li>
-    <li><a href="https://github.com/doclang-project/doclang/">Specification</a></li>
+    <li><a href="/viewer/">Viewer</a></li>
+    <li class="nav-hide-mobile"><a href="https://github.com/doclang-project/doclang/">Specification</a></li>
+    <li class="nav-hide-mobile"><a href="https://github.com/doclang-project" rel="noopener">GitHub</a></li>
     <li><a href="#cta" class="nav-cta">Get started</a></li>
   </ul>
 </nav>
@@ -1371,7 +1372,7 @@ h1, h2, h3 {
         <p class="hero-sub">PDF was built for print. DOCX was built for editors. DocLang is built for what comes next — a machine-readable document standard your models can actually trust.</p>
         <div class="hero-actions">
           <a href="https://github.com/doclang-project/doclang/" class="btn-primary">Read the spec</a>
-          <a href="https://github.com/doclang-project" class="btn-secondary" rel="noopener">View on GitHub →</a>
+          <a href="/viewer/" class="btn-secondary">Try the viewer →</a>
         </div>
       </div>
       <div class="hero-logo" aria-hidden="true">
@@ -1778,7 +1779,7 @@ h1, h2, h3 {
       <p class="cta-body">If you build with LLMs and VLMs on real-world content, DocLang is the substrate you've been missing. Free, open, and ready to use — read the spec and see what your models have been working around.</p>
       <div class="cta-actions">
         <a href="https://github.com/doclang-project/doclang/" class="btn-accent">Read the spec</a>
-        <a href="https://github.com/doclang-project" class="btn-ghost-light" rel="noopener">View on GitHub →</a>
+        <a href="/viewer/" class="btn-ghost-light">Try the viewer →</a>
         <a href="https://enrollment.lfx.linuxfoundation.org?project=doclang-specification" class="btn-ghost-light">Join the working group</a>
       </div>
     </div>
@@ -1789,8 +1790,9 @@ h1, h2, h3 {
 <footer class="footer">
   <ul class="footer-links">
     <li><a href="#">DocLang</a></li>
-    <li><a href="https://github.com/doclang-project" rel="noopener">GitHub</a></li>
+    <li><a href="/viewer/">Viewer</a></li>
     <li><a href="https://github.com/doclang-project/doclang/">Specification</a></li>
+    <li><a href="https://github.com/doclang-project" rel="noopener">GitHub</a></li>
     <li><a href="https://enrollment.lfx.linuxfoundation.org?project=doclang-specification">Working group</a></li>
     <li><a href="https://www.linuxfoundation.org/">Linux Foundation</a></li>
   </ul>
