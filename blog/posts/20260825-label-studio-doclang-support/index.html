@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-D7GR6ENE8G"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-D7GR6ENE8G');
+</script>
+
+<title>Label Studio Brings Native DocLang Support to Document Annotation — DocLang Blog</title>
+<meta name="description" content="Label Studio is the first annotation platform to adopt DocLang as a first-class format, enabling visual editing, real-time validation, and direct export of .dclx archives.">
+<link rel="icon" href="/logos/doclang_v3_sail.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/tokens.css">
+<link rel="stylesheet" href="/blog/styles.css">
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav" aria-label="Main navigation">
+  <a href="/" class="nav-logo" aria-label="DocLang home">
+    <img class="nav-logomark" src="/logos/doclang_v3_sail.svg" alt="DocLang"/>
+    &nbsp;&nbsp;DocLang
+  </a>
+  <ul class="nav-links">
+    <li><a href="/viewer/">Viewer</a></li>
+    <li><a href="/blog/" aria-current="page">Blog</a></li>
+    <li class="nav-hide-mobile"><a href="https://github.com/doclang-project/doclang/">Specification</a></li>
+    <li class="nav-hide-mobile"><a href="https://github.com/doclang-project" rel="noopener">GitHub</a></li>
+    <li><a href="/#cta" class="nav-cta">Get started</a></li>
+  </ul>
+</nav>
+
+<!-- ARTICLE HEADER -->
+<header class="article-header">
+  <div class="container">
+    <a class="article-back" href="/blog/">← Back to blog</a>
+    <div class="article-kicker">Ecosystem</div>
+    <h1>Label Studio Brings Native DocLang Support to Document Annotation</h1>
+    <div class="article-meta">
+      <span>August 25, 2026</span>
+    </div>
+  </div>
+</header>
+
+<!-- ARTICLE BODY -->
+<article class="article-body">
+  <div class="container">
+
+    <p>A standard is only as useful as the tools that speak it. Today we are excited to share that <a href="https://labelstud.io/">Label Studio</a>, the open-source data labeling platform by <a href="https://humansignal.com/">HumanSignal</a>, has shipped native DocLang support — visual editing, real-time validation, and direct export of <code>.dclx</code> archives. This makes Label Studio the first annotation platform to adopt DocLang as a first-class format, and it marks a significant milestone for the ecosystem.</p>
+
+    <h2>Why this matters</h2>
+
+    <p>DocLang was designed as the lossless interchange point between document understanding and downstream AI workflows. Conversion tools such as <a href="https://docling.ai/">Docling</a> can <em>produce</em> DocLang from PDFs, scans, and office files — but until now, dedicated tooling to <em>create, review, and correct</em> DocLang simply did not exist.</p>
+
+    <p>With Label Studio's native support, knowledge workers and data scientists can now build and refine ground truth directly in DocLang, without needing to run a conversion pipeline or hand-edit XML.</p>
+
+    <h2>What Label Studio supports</h2>
+
+    <p>The new annotation interface, co-developed by the Label Studio and DocLang teams, lets annotators work directly on rendered document pages. They draw bounding boxes for element types, define reading-order paths, and handle complex structures — ordered and unordered lists, merged regions, and detailed table layouts including spanned cells and table headings.</p>
+
+    <p>A live "DocLang" tab shows the resulting markup in real time, both as XML and as a rendered document preview, so errors immediately catch the eye. On export, annotations are packaged as <code>.dclx</code> archive files — the standard DocLang Archive format — containing the structural data alongside page images, ready for any downstream tool that reads the standard.</p>
+
+    <p>For full details on the integration, see <a href="https://humansignal.com/blog/docling-label-studio">Label Studio's announcement post</a>.</p>
+
+    <h2>What this unlocks</h2>
+
+    <p><em>Ground-truth creation for any DocLang producer.</em> Evaluation has always required gold-standard data. Label Studio now provides a dedicated interface for building that ground truth, and the resulting <code>.dclx</code> archives work as evaluation benchmarks for any tool or model that outputs DocLang — not just one specific conversion pipeline.</p>
+
+    <p><em>Fine-tuning data at scale.</em> Adapting document-understanding models to custom formats requires correctly structured labeled examples. Starting from model predictions and correcting them in Label Studio is dramatically faster than annotating from scratch, and the <code>.dclx</code> export feeds directly into training pipelines that consume the standard.</p>
+
+    <h2>The bigger picture</h2>
+
+    <p>HumanSignal is a founding member of the <a href="https://www.doclang.ai/">DocLang working group</a> under the <a href="https://lfaidata.foundation/projects/">LF AI &amp; Data Foundation</a>, alongside IBM, ABBYY, NVIDIA, and Red Hat. This integration is exactly the kind of independent tooling adoption an open standard needs: multiple producers, multiple consumers, and a shared format in between. We look forward to seeing more tools across the ecosystem adopt DocLang — and we welcome contributions from the community.</p>
+
+  </div>
+</article>
+
+<div class="article-footer">
+  <div class="container">
+    <a class="btn-secondary" href="/blog/">← Back to all posts</a>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <ul class="footer-links">
+    <li><a href="/">DocLang</a></li>
+    <li><a href="/viewer/">Viewer</a></li>
+    <li><a href="/blog/">Blog</a></li>
+    <li><a href="https://github.com/doclang-project/doclang/">Specification</a></li>
+    <li><a href="https://github.com/doclang-project" rel="noopener">GitHub</a></li>
+    <li><a href="https://enrollment.lfx.linuxfoundation.org?project=doclang-specification">Working group</a></li>
+    <li><a href="https://www.linuxfoundation.org/">Linux Foundation</a></li>
+  </ul>
+  <span class="footer-copy">© Contributors to DocLang Specification, a Joint Development Foundation Project · Open standard</span>
+</footer>
+
+</body>
+</html>
