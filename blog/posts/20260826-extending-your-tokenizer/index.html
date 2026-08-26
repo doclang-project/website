@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-D7GR6ENE8G"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-D7GR6ENE8G');
+</script>
+
+<title>Extending your tokenizer with DocLang's special tokens — DocLang Blog</title>
+<meta name="description" content="How DocLang's special tokens can be used, illustrated with indicative results from a sample of 8,030 DocLang documents.">
+<link rel="icon" href="/logos/doclang_v3_sail.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/tokens.css">
+<link rel="stylesheet" href="/blog/styles.css">
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav" aria-label="Main navigation">
+  <a href="/" class="nav-logo" aria-label="DocLang home">
+    <img class="nav-logomark" src="/logos/doclang_v3_sail.svg" alt="DocLang"/>
+    &nbsp;&nbsp;DocLang
+  </a>
+  <ul class="nav-links">
+    <li><a href="/viewer/">Viewer</a></li>
+    <li><a href="/blog/" aria-current="page">Blog</a></li>
+    <li class="nav-hide-mobile"><a href="https://github.com/doclang-project/doclang/">Specification</a></li>
+    <li class="nav-hide-mobile"><a href="https://github.com/doclang-project" rel="noopener">GitHub</a></li>
+    <li><a href="/#cta" class="nav-cta">Get started</a></li>
+  </ul>
+</nav>
+
+<!-- ARTICLE HEADER -->
+<header class="article-header">
+  <div class="container">
+    <a class="article-back" href="/blog/">← Back to blog</a>
+    <div class="article-kicker">Explainer</div>
+    <h1>Extending your tokenizer with DocLang's special tokens</h1>
+    <div class="article-meta">
+      <span>August 26, 2026</span>
+    </div>
+  </div>
+</header>
+
+<!-- ARTICLE BODY -->
+<article class="article-body">
+  <div class="container">
+
+    <p>In principle, any general-purpose tokenizer can handle DocLang as-is — DocLang is plain, well-formed XML markup, and a tokenizer that has never seen it before will do exactly what it does with any unfamiliar markup: represent text like <code>&lt;location value="267"/&gt;</code> or <code>&lt;heading level="1"&gt;</code> as a handful of generic subword tokens. Nothing breaks, nothing is misread. It's just the ordinary, unremarkable default.</p>
+
+    <p>To best align with DocLang's design, though, a tokenizer can be extended with DocLang's own vocabulary — in that case, that same text gets dedicated token IDs instead.</p>
+
+    <p>This post shows how those special tokens can be used, and illustrates the potential impact with indicative results from a sample dataset.</p>
+
+    <h2>A vocabulary extension, not a new tokenizer</h2>
+
+    <p>DocLang ships that extension as a single function: <code>doclang.tokenization.get_special_tokens()</code>. It returns a flat list of token strings covering every <code>&lt;location value="N"/&gt;</code> the format defines, plus fixed tokens for structural tags, attributes, and OTSL table cells. Hand that list to any Hugging Face tokenizer's <code>add_special_tokens</code>, and DocLang's own markup gets dedicated token IDs instead of being decomposed into generic subwords.</p>
+
+    <div class="code-card">
+      <div class="code-card-header">
+        <span class="code-card-label">Python</span>
+      </div>
+      <pre class="code-body"><span class="tok-key">from</span> transformers <span class="tok-key">import</span> AutoTokenizer
+<span class="tok-key">import</span> doclang.tokenization <span class="tok-key">as</span> dt
+
+tokenizer = AutoTokenizer.<span class="tok-fn">from_pretrained</span>(<span class="tok-str">"openai/gpt-oss-20b"</span>)
+tokenizer.<span class="tok-fn">add_special_tokens</span>(
+    {<span class="tok-str">"additional_special_tokens"</span>: dt.<span class="tok-fn">get_special_tokens</span>()}
+)</pre>
+    </div>
+
+    <h2>What it looks like on one document</h2>
+
+    <p>Below is the same DocLang fragment shown twice, tokenized with two variants of the same tokenizer: the base tokenizer as-is on the left, extended with DocLang's special tokens on the right. Let us consider for example the <code>&lt;heading level="2"&gt;</code> tag, the <code>&lt;location value="45"/&gt;</code> tag, or the <code>&lt;list class="ordered"&gt;</code> declaration. On the left, the base tokenizer represents each one of them as several generic tokens. On the right, though, the DocLang-customized tokenizer resolves each one of them as a single dedicated token, as illustrated by the blue outlines.</p>
+
+    <figure class="example-card example-card--narrow">
+      <img src="token-overlay-example.png" alt="Comparing the same DocLang fragment under a standard tokenizer (left) and one extended with DocLang's special tokens (right). On the right, complete tags such as heading and location tags are outlined in blue, marking them as single tokens; the same tags on the left have no such outline.">
+    </figure>
+    <p class="figure-caption">Left: the base tokenizer. Right: the same tokenizer, extended with DocLang's vocabulary.</p>
+
+    <h2>A quick comparison across more documents</h2>
+
+    <p>Targeting a sample dataset of 8,030 DocLang documents, we ran a preliminary comparison across two different base tokenizers (<code>ibm-granite/granite-4.0-350m</code> and <code>openai/gpt-oss-20b</code>), each tested with and without the vocabulary extension. The results below are indicative of the benefit DocLang's special tokens can bring:</p>
+
+    <div class="table-scroll">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th rowspan="2">Metric</th>
+            <th colspan="2">granite-4.0-350m</th>
+            <th colspan="2" class="data-table-group-start">gpt-oss-20b</th>
+          </tr>
+          <tr>
+            <th class="data-table-subhead">Base</th>
+            <th class="data-table-subhead">Extended</th>
+            <th class="data-table-subhead data-table-group-start">Base</th>
+            <th class="data-table-subhead">Extended</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Mean tokens</td>
+            <td>1,102</td>
+            <td>694</td>
+            <td class="data-table-group-start">1,121</td>
+            <td>654</td>
+          </tr>
+          <tr>
+            <td>Median tokens</td>
+            <td>1,010</td>
+            <td>592</td>
+            <td class="data-table-group-start">1,034</td>
+            <td>563</td>
+          </tr>
+          <tr>
+            <td>Mean relative reduction</td>
+            <td colspan="2">−41%</td>
+            <td colspan="2" class="data-table-group-start">−45%</td>
+          </tr>
+          <tr>
+            <td>Median relative reduction</td>
+            <td colspan="2">−40%</td>
+            <td colspan="2" class="data-table-group-start">−45%</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2>Takeaway</h2>
+
+    <p>Extending your tokenizer with DocLang's special-token vocabulary is optional but can meaningfully reduce token usage in your pipeline. Whether you are training DocLang-native models or otherwise building DocLang-native pipelines, this is a worthwhile step to consider.</p>
+
+  </div>
+</article>
+
+<div class="article-footer">
+  <div class="container">
+    <a class="btn-secondary" href="/blog/">← Back to all posts</a>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <ul class="footer-links">
+    <li><a href="/">DocLang</a></li>
+    <li><a href="/viewer/">Viewer</a></li>
+    <li><a href="/blog/">Blog</a></li>
+    <li><a href="https://github.com/doclang-project/doclang/">Specification</a></li>
+    <li><a href="https://github.com/doclang-project" rel="noopener">GitHub</a></li>
+    <li><a href="https://enrollment.lfx.linuxfoundation.org?project=doclang-specification">Working group</a></li>
+    <li><a href="https://www.linuxfoundation.org/">Linux Foundation</a></li>
+  </ul>
+  <span class="footer-copy">© Contributors to DocLang Specification, a Joint Development Foundation Project · Open standard</span>
+</footer>
+
+</body>
+</html>
